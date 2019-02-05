@@ -18,11 +18,11 @@ This package describes the workflow to download binding sites of transcription f
 
 ----
 
-# 2 GTRD Data
+# 2 GTRD Data semantics
 
 GTRD is a database of f transcription factor (TF) binding sites identified from ChIP-seq experiments that were systematically collected and uniformly processed using a special workflow (pipeline) for a BioUML platform (http://www.biouml.org). [Reference](http://wiki.biouml.org/index.php/GTRD)
 Chromosomal coordinates reference: Under Data processing workflow: alignment of reads—we used Bowtie2 (version 2.2.3) (12) to align ChIP-seq reads to the reference human (GRCh38) and mouse (GRCm38) genomes.[Reference](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210645/)
-
+![](./inst/img/workflow.png?sanitize=true "GTRD Workflow")
 
 &nbsp;
 
