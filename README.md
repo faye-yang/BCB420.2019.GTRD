@@ -54,9 +54,10 @@ for(i in 1:nrow(chr_data)){
 all(indentifier) #all peaks fine are regulatory region
 #remove peak that
 chr_data<-chr_data[indentifier,]
+```
 
-
-#find outdated gene symbol
+Find outdated gene symbol
+```R
 sel <- ( ! (chr_data$sym %in% HGNC$sym)) & ( ! (is.na(chr_data$sym)))
 sum(sel) 
 uSym<-unique(chr_data$sym) 
@@ -83,7 +84,12 @@ indexNA<-which(!is.na(unkSym$new))
 #update the outdated gene symbol 
 chr_data$sym[sel] <-unkSym$new
 
+sum(is.na(chr_data$sym) ) #0
+#do not need to remove rows that have NA
+```
 
+Retrieve Transcript information
+```R 
 myMart <- biomaRt::useMart("ensembl", dataset="hsapiens_gene_ensembl")
 #get all transcripts of gene sybol 
 transcript_data <- biomaRt::getBM(filters = "hgnc_symbol",
@@ -95,56 +101,40 @@ transcript_data <- biomaRt::getBM(filters = "hgnc_symbol",
                                   values = HGNC$sym,
                                   mart = myMart)
 
-#map the binding site to the transcipt
-for(i in nrow(transcript_data)){
-  promo_reg_start<-transcript_data$transcript_start-10001
-  promo_reg_end<-transcript_data$transcript_start-1
-  
-}
 
 
 ```
-
 
 &nbsp;
 
-# 4 storing TF information
-Store the each TF associated gene and the site where TF bind within the chromosome regular region.**
-
-```R
-
-site<-chr_data$start +chr_data$summit
-tfSites<-list()
-#map the binding site to the transcipt
-for(i in 1:nrow(transcript_data)){
-  promo_reg_start<-transcript_data$transcript_start[i]-10001
-  promo_reg_end<-transcript_data$transcript_start[i]-1
-  index<-which(promo_reg_start<=site & site<=promo_reg_end)
-  sym<-chr_data$sym[index]
-  site_new<-site[index]
-  for(j in 1:length(sym)){
-    tfSites[[sym[j]]]$reg_gene<-c(tfSites[[sym[j]]]$reg_gene,
-                                  transcript_data$hgnc_symbol[i])
-    tfSites[[sym[j]]]$sites <- c(tfSites[[sym[j]]]$sites,
-                                 paste0("chr",transcript_data$chromosome_name[i],":", 
-                                        site_new[j]))
-
-  }
-  
-}
-
-```
-
-## 4.1 Data cleanup
-
-Remove rows withHGNC symbol equal to NA or "".
 
 
 &nbsp;
 
 # 5 A script for annotating gene sets
 
- ...
+ ```R
+ 
+ site<-chr_data$start +chr_data$summit
+tfSites<-list()
+#map the binding site to the transcipt
+for(i in 1:nrow(transcript_data)){
+  i<-1
+  promo_reg_start<-transcript_data$transcript_start[i]-10001
+  promo_reg_end<-transcript_data$transcript_start[i]-1
+  index<-which(promo_reg_start<=site & site<=promo_reg_end)
+  sym<-chr_data$sym[index]
+  symbol<-unique(sym)
+  name<-transcript_data$hgnc_symbol[i]
+  for(j in 1:length(symbol)){
+    if(!(symbol[j] %in% tfSites[[name]]$reg_gene)){
+      tfSites[[name]]$reg_gene<-c(tfSites[[name]]$reg_gene,
+                                  symbol[j])
+      
+    }
+  }
+}
+ ```
 
 
 
@@ -176,7 +166,7 @@ exam_transcript_data <- biomaRt::getBM(filters = "hgnc_symbol",
                                        mart = myMart)
 
 
-```R
+```
 
 &nbsp;
 
