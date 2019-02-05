@@ -11,9 +11,33 @@
 # 1 About this package:
 
 
-This package describes the workflow to download binding sites of transcription factor that is  identified from ChIP-seq experiments from the GTRD database, how to clean up the dataset, how to annotate the example gene set, and provides examples of computing database statistics.
+This package describes the workflow to download binding sites of transcription factor that is  identified from ChIP-seq experiments from the GTRD database, how to clean up the dataset, how to annotate the example gene set, and provides examples of computing database statistics. Ultimately, given a gene symbol, which other symbols are regulated by the same transcription factors
 
 
+
+```text
+ --BCB420.2019.GTRD/
+   |__.gitignore
+   |__.Rbuildignore
+   |__BCB420.2019.GTRD.Rproj
+   |__DESCRIPTION
+   |__dev/
+      |__rptTwee.R
+      |__toBrowser.R               # display .md files in your browser
+   |__inst/
+      |__extdata/
+         |__
+      |__img/
+         |__[...]                  # image sources for .md document
+      |__scripts/
+         |__GTRDwork.R           # get TFs bind to the given gene's promotor region 
+   |__LICENSE
+   |__NAMESPACE
+   |__R/
+      |__zzz.R
+   |__README.md                    # this file
+
+```
 
 
 ----
@@ -126,7 +150,7 @@ transcript_data <- biomaRt::getBM(filters = "hgnc_symbol",
 # 5 A script for annotating gene sets
 
  ```R
- 
+ #obtain all the TFs that are bind to the same promotpr region of 1 gene
  site<-chr_data$start +chr_data$summit
 tfSites<-list()
 #map the binding site to the transcipt
@@ -145,6 +169,25 @@ for(i in 1:nrow(transcript_data)){
       
     }
   }
+}
+
+#obtain all the gene symbols that is regulated by the same TF
+gene_list<-list()  #symbol -> TF
+
+gene_list<-list()  #sym -> TF
+for(chr in chr_list){
+  chr_name<-paste ("chr",chr, sep = "", collapse = NULL)
+  TFs<-unique(chr_data$sym[chr_data$chr==chr_name])
+  print(length(TFs))
+  for(tf in TFs){
+    promo_reg_start<-transcript_data$transcript_start-10001
+    promo_reg_end<-promo_reg_start+1000
+    site_tf<-chr_data$start[chr_data$sym==tf]+chr_data$summit[chr_data$sym==tf]
+    index<-which(promo_reg_start<=site & site<=promo_reg_end)
+    pro_gene<-transcript_data$sym[index]
+    gene_list[[tf]]$genes<-unique(c(gene_list[[tf]]$genes,pro_gene))
+  }
+  
 }
  ```
 
