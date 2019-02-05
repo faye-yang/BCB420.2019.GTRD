@@ -19,9 +19,21 @@ This package describes the workflow to download binding sites of transcription f
 ----
 
 # 2 GTRD Data semantics
+[Reference](http://wiki.biouml.org/index.php/GTRD)
+Raw ChIP-seq data and experiment information were collected from:literature,GEO,SRA, ENCODE.
+Initial ChIP-seq and DNase-seq raw data were uniformly processed using specially developed workflow (pipeline) for the BioUML platform. ChIP-seq processing pipeline included the following steps:
+1. sequenced reads were aligned to the corresponding reference genome using Bowtie2;
+peaks were identified using MACS, SISSR, GEM and PICS peak callers;
+2. peaks computed for the same TF and peak calling method, but different experiment conditions (e.g., cell line, treatment, etc.) were joined into clusters;
+3. clusters for the same TF revealed by different peak calling methods were joined into metaclusters.
+DNase-seq processing pipeline included the following steps:
+1.sequenced reads were aligned to the corresponding reference genome using Bowtie2;
+2.regions of open chromatin were identified using MACS2 and Hotspot2;
+3. de novo putative protein-DNA interactions were revealed using a digital genomic footprinting tool Wellington.
 
-GTRD is a database of f transcription factor (TF) binding sites identified from ChIP-seq experiments that were systematically collected and uniformly processed using a special workflow (pipeline) for a BioUML platform (http://www.biouml.org). [Reference](http://wiki.biouml.org/index.php/GTRD)
+GTRD is a database of f transcription factor (TF) binding sites identified from ChIP-seq experiments that were systematically collected and uniformly processed using a special workflow (pipeline) for a BioUML platform (http://www.biouml.org). 
 Chromosomal coordinates reference: Under Data processing workflow: alignment of reads—we used Bowtie2 (version 2.2.3) (12) to align ChIP-seq reads to the reference human (GRCh38) and mouse (GRCm38) genomes.[Reference](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210645/)
+
 ![](./inst/img/workflow.png?sanitize=true "GTRD Workflow")
 
 &nbsp;
