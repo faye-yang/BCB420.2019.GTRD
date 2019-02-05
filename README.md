@@ -108,16 +108,30 @@ for(i in nrow(transcript_data)){
 
 &nbsp;
 
-# 4 Mapping chromosome positions IDs to HGNC symbols
-
-GTRD provies chromosome positions where transcription factors bind. These can usually be mapped to HGNC symbols, but not all positons can map to a HGNC symbols. Different chromosome positions can map to the the same HGNC symbols.**
+# 4 storing TF information
+Store the each TF associated gene and the site where TF bind within the chromosome regular region.**
 
 ```R
-mart <- useMart(biomart="ensembl", dataset="hsapiens_gene_ensembl")
-chr1_result <- getBM(attributes = c("hgnc_symbol", "chromosome_name",
-"start_position","end_position"),
-filters = c("chromosome_name", "start", "end"),
-values = list(df$chr, df$start, df$end), mart = mart)
+
+site<-chr_data$start +chr_data$summit
+tfSites<-list()
+#map the binding site to the transcipt
+for(i in 1:nrow(transcript_data)){
+  promo_reg_start<-transcript_data$transcript_start[i]-10001
+  promo_reg_end<-transcript_data$transcript_start[i]-1
+  index<-which(promo_reg_start<=site & site<=promo_reg_end)
+  sym<-chr_data$sym[index]
+  site_new<-site[index]
+  for(j in 1:length(sym)){
+    tfSites[[sym[j]]]$reg_gene<-c(tfSites[[sym[j]]]$reg_gene,
+                                  transcript_data$hgnc_symbol[i])
+    tfSites[[sym[j]]]$sites <- c(tfSites[[sym[j]]]$sites,
+                                 paste0("chr",transcript_data$chromosome_name[i],":", 
+                                        site_new[j]))
+
+  }
+  
+}
 
 ```
 
