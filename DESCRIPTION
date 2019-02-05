@@ -1,0 +1,17 @@
+Package: BCB420.2019.GTRD
+Type: Package
+Title: GTRD data annotatation of human genes
+Version: 0.1.0
+Date: 2019-02-05
+Authors@R: c(
+    person("Yufei", "Yang", email = "faye.yang@utoronto.ca", role = c("aut", "cre"))
+    )
+Description: Describes the workflow for annotating human genes with
+             GTRD data and contains an annotated example
+             data set of genes in the phagosyme-lysosome fusion system.
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    testthat
+RoxygenNote: 6.1.1
