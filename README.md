@@ -267,7 +267,7 @@ p<-ggplot(data=df, aes(x=i, y=num))+
 p
 
 ```
-
+![GTRD Workflow](/data/barplot.png)
 &nbsp;
 
 # 6 Further reading
