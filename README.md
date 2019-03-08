@@ -209,7 +209,8 @@ xSet <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
 ex_set<-list()
 #associated TF
 for (i in xSet) {
-  ex_set[[i]]$TFs<-tf_list[[i]]$tfs
+  temp=gene_list$tf[which(gene_list$pro_gene==i)]
+  ex_set[[i]]$tf=factor(temp)
 }
 ex_set
 #$TPPP
