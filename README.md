@@ -213,47 +213,58 @@ for (i in xSet) {
   ex_set[[i]]$tf=factor(temp)
 }
 ex_set
+
 #$TPPP
 #$TPPP$TFs
 # [1] "MYC"   "ESR1"  "PGR"   "PPARG" "CEBPD" "MAX"   "FLI1"  "SP2"   "RELA"  "SMC3"
-#ommiting other results
-
-ex_genelist<-list()
-#associated gene for a given gene
-for(gene in ex_set){
-  for(tf in ex_set[[gene]]$TFs){
-    ex_genelist[[gene]]<-c(ex_genelist[[gene]],gene_list[[tf]]$genes)
-  }
-}
 
 $DCTN1
-$DCTN1$tf
- [1] MEIS2   ZNF263  CLOCK   NCOR1   MYC     ESR1    MYCN    TP53    JUN    
-[10] PGR     SP1     ZBTB48  AR      EGR2    ERG     ETS1    ATF2    CREB1  
-[19] JUNB    JUND    TAL1    ATF7    SPI1    ATF1    ATF3    WT1     RXRA   
-[28] TBP     TAF1    USF1    RFX1    NFYA    GATA2   YY1     ARNT    OTX2   
-[37] PPARG   STAT5A  CTCF    MXI1    STAT5B  ZNF143  FOXA1   MAZ     MAX    
-[46] E2F1    RUNX1   FLI1    POU5F1  SPIB    SP2     SP4     CREM    KMT2A  
-[55] RELA    EGR3    FOXM1   ZBTB17  SP140   NEUROD1 USF2    CRY1    NRF1   
-[64] ZNF554  GLIS1   GRHL3   TFAP2C  TCF12   SCRT1   ZFHX2   NANOG   TCF7L1 
-[73] PRDM9   ZNF629  ZNF639 
+#$DCTN1$tf
+# [1] MEIS2   ZNF263  CLOCK   NCOR1   MYC     ESR1    MYCN    TP53    JUN    
+#[10] PGR     SP1     ZBTB48  AR      EGR2    ERG     ETS1    ATF2    CREB1  
+#[19] JUNB    JUND    TAL1    ATF7    SPI1    ATF1    ATF3    WT1     RXRA   
+#[28] TBP     TAF1    USF1    RFX1    NFYA    GATA2   YY1     ARNT    OTX2   
+#[37] PPARG   STAT5A  CTCF    MXI1    STAT5B  ZNF143  FOXA1   MAZ     MAX    
+#[46] E2F1    RUNX1   FLI1    POU5F1  SPIB    SP2     SP4     CREM    KMT2A  
+#[55] RELA    EGR3    FOXM1   ZBTB17  SP140   NEUROD1 USF2    CRY1    NRF1   
+#[64] ZNF554  GLIS1   GRHL3   TFAP2C  TCF12   SCRT1   ZFHX2   NANOG   TCF7L1 
+#[73] PRDM9   ZNF629  ZNF639 
+#
+#$MAP1LC3C
+#$MAP1LC3C$tf
+# [1] FOS    NR3C1  JUN    ZBTB48 FOSL1  FOSL2  GATA1  CREB1  ZNF30  JUND   TAL1  
+#[12] CEBPB  SPI1   ATF3   RXRA   YY1    MZF1   STAT5A NKX2-1 CEBPA  STAT5B ZNF143
+#[23] FOSB   MAZ    MAX    RUNX1  FLI1   RELA   KLF9   NFE2   ZNF770 ZNF549 ZNF600
+#[34] ZNF554 GLIS1  RBAK  
 
-$MAP1LC3C
-$MAP1LC3C$tf
- [1] FOS    NR3C1  JUN    ZBTB48 FOSL1  FOSL2  GATA1  CREB1  ZNF30  JUND   TAL1  
-[12] CEBPB  SPI1   ATF3   RXRA   YY1    MZF1   STAT5A NKX2-1 CEBPA  STAT5B ZNF143
-[23] FOSB   MAZ    MAX    RUNX1  FLI1   RELA   KLF9   NFE2   ZNF770 ZNF549 ZNF600
-[34] ZNF554 GLIS1  RBAK  
+#$STX6
+#$STX6$tf
+# [1] MEIS2   ZNF263  ZEB2    E2F6    ZBTB7A  FOS     MYC     ESR1    NR3C1  
+#[10] PGR     AR      NR2F6   NR2F1   ERG     VDR     ESRRA   IRF2    GATA1  
+#[19] JUNB    JUND    TAL1    CEBPB   SPI1    WT1     RXRA    BCL3    NR4A1  
+#[28] GATA2   NR2F2   SOX6    PPARG   PBX3    NR2C2   CEBPA   CEBPD   ASCL1  
+#[37] ZNF143  FOXA1   PKNOX1  MAX     FOXK2   RUNX1   ID3     CREM    KMT2A  
+#[46] RELA    MTA1    IKZF1   HES1    TEAD4   TWIST1  SMAD1   NFE2    ZNF766 
+#[55] ARID1B  MNT     NEUROG2 TCF7L2  KDM5B   SMC3    FOXA2 
+```
 
-$STX6
-$STX6$tf
- [1] MEIS2   ZNF263  ZEB2    E2F6    ZBTB7A  FOS     MYC     ESR1    NR3C1  
-[10] PGR     AR      NR2F6   NR2F1   ERG     VDR     ESRRA   IRF2    GATA1  
-[19] JUNB    JUND    TAL1    CEBPB   SPI1    WT1     RXRA    BCL3    NR4A1  
-[28] GATA2   NR2F2   SOX6    PPARG   PBX3    NR2C2   CEBPA   CEBPD   ASCL1  
-[37] ZNF143  FOXA1   PKNOX1  MAX     FOXK2   RUNX1   ID3     CREM    KMT2A  
-[46] RELA    MTA1    IKZF1   HES1    TEAD4   TWIST1  SMAD1   NFE2    ZNF766 
-[55] ARID1B  MNT     NEUROG2 TCF7L2  KDM5B   SMC3    FOXA2 
+# 5 Annotating the example set
+```R
+
+df=data.frame(gene=c(),num=())
+for(i in xSet){
+  temp=data.frame(gene=i,num=length(ex_set[[i]])
+  df=rbind(df,temp)
+}
+
+
+library(ggplot2)
+p<-ggplot(data=df, aes(x=i, y=num))+
+  geom_bar(stat="identity")+
+  theme(legend.direction = "vertical")+
+  theme(axis.text.x = element_text(angle = -90))
+  +theme(legend.position = "bottom") 
+p
 
 ```
 
