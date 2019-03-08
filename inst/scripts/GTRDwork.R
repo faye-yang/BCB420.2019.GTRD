@@ -76,53 +76,35 @@ head(transcript_data$hgnc_symbol)
 
 
 #annotation
-transcript_data$transcript_start<-transcript_data$transcript_start-1001
-head(transcript_data$transcript_start)
-gene_list<-list()  #sym -> TF
+gene_list<-data.frame(gene=c(),TF=c(),stringsAsFactors = FALSE)  #sym -> TF
 for(chr in chr_list){
   transcrip_subset_index<-which(transcript_data$chromosome_name==chr)
   chr_name<-paste ("chr",chr, sep = "", collapse = NULL)
   #for 1 chromosome TTS
-  nrow(transcript_data$transcript_start)
-  promo_reg_start<-transcript_data$transcript_start[transcrip_subset_index]
-  promo_reg_end<-promo_reg_start+1000
   TFs<-unique(chr_data$sym[chr_data$chr==chr_name])
   
   for(tf in TFs){
     index<-which(chr_data$sym==tf&chr_data$chr==chr_name)
     site_tf<-chr_data$start[index]+chr_data$summit[index]
     for(site in site_tf){
-      check<-(promo_reg_start<=site & site<=promo_reg_end)
-      #check binding gene promoter region
-      if(any(check)){
-        index_index<-which(check)
-        index_bind<-transcrip_subset_index[index_index]
-        pro_gene<-transcript_data$hgnc_symbol[index_bind]
-        gene_list[[tf]]$genes<-unique(c(gene_list[[tf]]$genes,pro_gene))
+      index1=which((transcript_data$transcript_start-1001)<=site)
+      index2=which(site<=transcript_data$transcript_start)
+      inter=intersect(index2,index1)
+      if(length(inter)!=0){
+        pro_gene<-transcript_data$hgnc_symbol[inter]
+        temp=data.frame(pro_gene,tf)
+        gene_list=rbind(gene_list, temp)
+        print(gene_list)
+        
       }
-      
-    }
-    
-  }
-}
-
-save(gene_list,file="data/gene_list.RData")
-
-tf_list<-list()
-for(gene_sym in HGNC$sym){
-  for(tf_sym in names(gene_list)){
-    if(gene_sym %in% gene_list[[tf_sym]]$genes){
-      tf_list[[gene_sym]]$tfs<-c(tf_list[[gene_sym]]$tfs,tf_sym)
     }
   }
 }
+gene_list=unique(gene_list)
+unique_tf=unique(gene_list$tf)
+unique_gene=unique(gene_list$pro_gene)
 
-for (i in tf_list) {
-  i$tfs<-unique(i$tfs)
-  
-}
-
-save(tf_list,file="data/tf_List.RData")
+save(gene_list,file="data/gene_df.RData")
 
 
 
@@ -157,18 +139,32 @@ xSet <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
 ex_set<-list()
 #associated TF
 for (i in xSet) {
-  ex_set[[i]]$TFs<-tf_list[[i]]$tfs
+  temp=gene_list$tf[which(gene_list$pro_gene==i)]
+  ex_set[[i]]$tf=factor(temp)
 }
 ex_set
 
-ex_genelist<-list()
-#associated gene for a given gene
-for(gene in ex_set){
-  for(tf in ex_set[[gene]]$TFs){
-    ex_genelist[[gene]]<-c(ex_genelist[[gene]],gene_list[[tf]]$genes)
+df=data.frame(gene=c(),num=c())
+for(i in xSet){
+  if(length(ex_set[[i]]$tf)>=1){
+    temp=data.frame(i,num=length(ex_set[[i]]$tf))
+    df=rbind(df,temp)
   }
+  
 }
 
+library(ggplot2)
+p<-ggplot(data=df, aes(x=i, y=num))+
+  geom_bar(stat="identity")+
+  theme(legend.direction = "vertical")+
+  theme(axis.text.x = element_text(angle = -90))
++theme(legend.position = "bottom") 
+p
+barplot(df$num,
+        ylim=c(0,100), breaks = 10,col = "#B22222",
+        main = "Number of transcription factor of gene distribution",
+        xlab = "gene name",
+        ylab = "Counts",names.arg =df$i )
 
 
 
